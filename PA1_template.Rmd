@@ -11,22 +11,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-
-```{1- Code for reading in the dataset and/or processing the data}
+##1- Code for reading in the dataset and/or processing the data
+```{r}
 Q1 <- read.csv("activity.csv")
 sum(is.na(Q1))
 Q1_no_na <- na.omit(Q1)
 ```
 
-```{2- Histogram of the total number of steps taken each day }
+##2- Histogram of the total number of steps taken each day
+```{r}
 h1 <- aggregate(steps ~ date, Q1_no_na, sum)
 hist(h1$steps, main= "STEPS BY DAY", xlab="steps", ylab="Frecuency",col="purple",breaks = 20)
 ```
-```{3- Mean and median number of steps taken each day }
+
+
+##3- Mean and median number of steps taken each day 
+```{r}
 mean(h1$steps)
 median(h1$steps)
 ```
-```{4- Time series plot of the average number of steps taken }
+
+##4- Time series plot of the average number of steps taken
+```{r}
 library(ggplot2)
 par(mar = c(1.5, 1.5, 1, 1))
 plot_time_series <- aggregate(steps ~ interval, Q1_no_na, mean)
@@ -38,13 +44,15 @@ ggplot(plot_time_series, aes(interval, steps)) +
         ylab("Number of steps")
 ```
 
-```{5- The 5-minute interval that, on average, contains the maximum number of steps}
+##5- The 5-minute interval that, on average, contains the maximum number of steps
+```{r}
 max_number_steps <- which.max(plot_time_series$steps)
 print(plot_time_series[max_number_steps,])
 
 ```
 
-```{6- Code to describe and show a strategy for imputing missing data}
+##{6- Code to describe and show a strategy for imputing missing data}
+```{r}
 number_na <- sum(is.na(Q1$steps))
 print(number_na)
 
@@ -64,7 +72,8 @@ step_with_missings <- aggregate(steps ~ date, new_activity, sum)
 
 ```
 
-```{7- Histogram of the total number of steps taken each day after missing values are imputed}
+##{7- Histogram of the total number of steps taken each day after missing values are imputed}
+```{r}
 
 hist(
         step_with_missings$steps, 
@@ -78,8 +87,8 @@ hist(
 
 ```
 
-```{8- Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends}
-
+##8- Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends}
+```{r}
 week_Q1 <- new_activity
 week_Q1$date <- as.Date(strptime(week_Q1$date, format="%Y-%m-%d")) 
 
